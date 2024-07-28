@@ -1,0 +1,7 @@
+# Ignore /bin, /obj, and /.vs directories
+bin/
+obj/
+.vs/
+
+# Ignore .user files
+*.user
