@@ -1,27 +1,47 @@
 ﻿@inject NavigationManager NavigationManager
 
-@if(Server != null)
+@if (Server != null)
 {
-    
-        <li @key="Server.ServerId">
-            @Server.Name in @Server.City is
-            <span style="color:@(Server.IsOnline?"green":"red")">
-                @(Server.IsOnline ? "online" : "offline")
-            </span>
-            &nbsp;
-            <a href="/servers/@Server.ServerId" class="btn btn-link">Edit</a>
-            &nbsp;
-            <EditForm Model="Server"
-                      FormName="@($"form-server-{Server.ServerId}")"
-                      OnValidSubmit="@(() => { DeleteServer(Server.ServerId); })">
-                <button type="submit" class="btn btn-primary">Delete</button>
-            </EditForm>
-        </li>
+
+    <li @key="Server.ServerId" style="background-color: @GetCityColor()">
+        @Server.Name in @Server.City is
+        <span style="color:@(Server.IsOnline?"green":"red"); font-weight:600;">
+            @(Server.IsOnline ? "online" : "offline")
+        </span>
+        &nbsp;
+        Users Online = @(Server.UserCount>0? Server.UserCount : "n/a" )
+        &nbsp;
+        @if (Server.IsOnline)
+        {
+            <button type="button" class="btn btn-outline-danger"
+                    @onclick="(()=> {this.Server.IsOnline = false;})">
+                Turn OFF
+            </button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-outline-success"
+                    @onclick="(()=> {this.Server.IsOnline = true;})">
+                Turn ON
+            </button>
+        }
+        &nbsp;
+        <a href="/servers/@Server.ServerId" class="btn btn-link">Edit</a>
+        &nbsp;
+        <EditForm Model="Server"
+                  FormName="@($"form-server-{Server.ServerId}")"
+                  OnValidSubmit="@(() => { DeleteServer(Server.ServerId); })">
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </EditForm>
+    </li>
 }
 
 @code {
     [Parameter]
     public Server? Server { get; set; }
+
+    [CascadingParameter(Name = "SelectedCity")]
+    public string SelectedCity { get; set; }
 
     private void DeleteServer(int serverId)
     {
@@ -31,4 +51,23 @@
             NavigationManager.NavigateTo("/servers", true); // This does not work if global rendermode is set to InteractiveServer
         }
     }
+
+    private string GetCityColor()
+    {
+        if (SelectedCity != null)
+        {
+            switch (SelectedCity)
+            {
+                case "Toronto" : return "#11ee00";
+                case "Ottawa"  : return "#9999ff";
+                case "Halifax" : return "#ffdd00";
+                case "Montreal": return "#992211";
+                case "Calgary" : return "#dd33ef";
+                default        : return "white";
+            }
+        }
+        else
+            return "white";
+    }
+
 }

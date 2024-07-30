@@ -5,26 +5,25 @@
 <br />
 <br />
 
-<CityListComponent 
-    @ref="cityListComponent" 
-    SelectCityCallback="HandleCitySelection">
+<CityListComponent @ref="cityListComponent"
+                   SelectCityCallback="HandleCitySelection">
 </CityListComponent>
 
-<br/>
+<br />
 
 
-<ServerSearchComponent 
-    @ref="serverSearchComponent"
-    SetSearchFilterCallback="HandleSearch">
+<ServerSearchComponent @ref="serverSearchComponent"
+                       SetSearchFilterCallback="HandleSearch">
 </ServerSearchComponent>
 
 <br />
 
-<ServerListComponent 
-    @rendermode="InteractiveServer"
-    CityName="@selectedCity"
-    SearchFilter="@searchFilter">
-</ServerListComponent>
+<CascadingValue Name="SelectedCity" Value="@selectedCity">
+    <ServerListComponent @rendermode="InteractiveServer"
+                         CityName="@selectedCity"
+                         SearchFilter="@searchFilter">
+    </ServerListComponent>
+</CascadingValue>
 
 <br />
 <a href="/servers/add" class="btn btn-primary">Add Server</a>
