@@ -9,8 +9,6 @@
             @(Server.IsOnline ? "online" : "offline")
         </span>
         &nbsp;
-        Users Online = @(Server.UserCount>0? Server.UserCount : "n/a" )
-        &nbsp;
         @if (Server.IsOnline)
         {
             <button type="button" class="btn btn-outline-danger"
@@ -25,6 +23,19 @@
                 Turn ON
             </button>
         }
+        &nbsp;
+
+        @if(Server.IsOnline)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(0, 1000);
+            <text>@randomNumber</text>
+        }
+        else
+        {
+            <text>N/A</text>
+        }
+
         &nbsp;
         <a href="/servers/@Server.ServerId" class="btn btn-link">Edit</a>
         &nbsp;
