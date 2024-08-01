@@ -3,48 +3,55 @@
 @if (Server != null)
 {
 
-    <li @key="Server.ServerId" style="background-color: @GetCityColor()">
-        @Server.Name in @Server.City is
-        <span style="color:@(Server.IsOnline?"green":"red"); font-weight:600;">
+    <tr @key="Server.ServerId" style="background-color: @GetCityColor()">
+        <td>
+            @Server.Name
+        </td>
+        <td>
+            @Server.City
+        </td>
+        <td style="color:@(Server.IsOnline?"green":"red"); font-weight:600;">
             @(Server.IsOnline ? "online" : "offline")
-        </span>
-        &nbsp;
-        @if (Server.IsOnline)
-        {
-            <button type="button" class="btn btn-outline-danger"
-                    @onclick="(()=> {this.Server.IsOnline = false;})">
-                Turn OFF
-            </button>
-        }
-        else
-        {
-            <button type="button" class="btn btn-outline-success"
-                    @onclick="(()=> {this.Server.IsOnline = true;})">
-                Turn ON
-            </button>
-        }
-        &nbsp;
+        </td>
+        <td>
+            @if (Server.IsOnline)
+            {
+                Random random = new Random();
+                int randomNumber = random.Next(0, 1000);
+                <text>@randomNumber</text>
+            }
+            else
+            {
+                <text>N/A</text>
+            }
+        </td>
+        <td>
+            @if (Server.IsOnline)
+            {
+                <button type="button" class="btn btn-outline-danger"
+                        @onclick="(()=> {this.Server.IsOnline = false;})">
+                    Turn Off
+                </button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-outline-success"
+                        @onclick="(()=> {this.Server.IsOnline = true;})">
+                    Turn On
+                </button>
+            }
+            &nbsp;
+            <a href="/servers/@Server.ServerId" class="btn btn-outline-primary">Edit</a>
+        </td>
+        <td>
+            <EditForm Model="Server"
+                      FormName="@($"form-server-{Server.ServerId}")"
+                      OnValidSubmit="@(() => { DeleteServer(Server.ServerId); })">
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </EditForm>
+        </td>
 
-        @if(Server.IsOnline)
-        {
-            Random random = new Random();
-            int randomNumber = random.Next(0, 1000);
-            <text>@randomNumber</text>
-        }
-        else
-        {
-            <text>N/A</text>
-        }
-
-        &nbsp;
-        <a href="/servers/@Server.ServerId" class="btn btn-link">Edit</a>
-        &nbsp;
-        <EditForm Model="Server"
-                  FormName="@($"form-server-{Server.ServerId}")"
-                  OnValidSubmit="@(() => { DeleteServer(Server.ServerId); })">
-            <button type="submit" class="btn btn-primary">Delete</button>
-        </EditForm>
-    </li>
+    </tr>
 }
 
 @code {
@@ -69,12 +76,12 @@
         {
             switch (SelectedCity)
             {
-                case "Toronto" : return "#11ee00";
-                case "Ottawa"  : return "#9999ff";
-                case "Halifax" : return "#ffdd00";
+                case "Toronto": return "#11ee00";
+                case "Ottawa": return "#9999ff";
+                case "Halifax": return "#ffdd00";
                 case "Montreal": return "#992211";
-                case "Calgary" : return "#dd33ef";
-                default        : return "white";
+                case "Calgary": return "#dd33ef";
+                default: return "white";
             }
         }
         else
