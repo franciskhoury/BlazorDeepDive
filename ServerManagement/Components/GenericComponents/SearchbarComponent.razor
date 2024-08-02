@@ -1,0 +1,27 @@
+﻿<div class="input-group mb-3 input-width" @attributes=CustomAttribs>
+    <input type="text" class="form-control" placeholder="Search Servers"
+           @bind-value="searchFilter"
+           @bind-value:event="oninput" />
+    <button class="btn btn-outline-secondary" type="button" id="btn-search" @onclick="SetSearchFilter">Search</button>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<string> SetSearchFilterCallback { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string,object>? CustomAttribs { get; set; }
+
+    public void ClearFilter()
+    {
+        searchFilter = string.Empty;
+    }
+
+    private void SetSearchFilter()
+    {
+        SetSearchFilterCallback.InvokeAsync(searchFilter);
+    }
+
+    private string searchFilter = "";
+}

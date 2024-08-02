@@ -1,0 +1,22 @@
+﻿@if (Task != null)
+{
+    <tr @key="Task.Id">
+        <td class="td-narrow">
+            <input type="checkbox" @bind-value="Task.IsComplete" class="form-check-input" checked="@Task.IsComplete"></input>
+        </td>
+        <td class="td-wide">
+            <input type="text" @bind-value="Task.Name" class="form-control border-0 @(Task.IsComplete? "text-decoration-line-through":"")" disabled="@Task.IsComplete" />
+        </td>
+        <td class="td-wide">
+            <text>
+                @(Task.IsComplete ? $"Completed at: {Task.CompletedTime.ToString()}" : "")
+            </text>
+        </td>
+    </tr>
+}
+
+
+@code {
+    [Parameter]
+    public ToDoItem? Task { get; set; }
+}

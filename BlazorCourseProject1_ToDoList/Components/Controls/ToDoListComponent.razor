@@ -1,0 +1,35 @@
+﻿@if (Tasks != null && Tasks.Count > 0)
+{
+    <table class="table table-striped">
+        <RepeaterComponent Items="this.Tasks">
+            <!--
+            <Header>
+            <thead>
+                <tr>
+                    <th>
+                        &nbsp;
+                    </th>
+                    <th>
+                        Task
+                    </th>
+                    <th>
+                        Completed Time
+                    </th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            </Header>
+            -->
+            <Row Context="task">
+                <ToDoItemComponent Task="task">
+                </ToDoItemComponent>
+            </Row>
+        </RepeaterComponent>
+    </table>
+}
+@code {
+    [Parameter]
+    public List<ToDoItem>? Tasks { get; set; }
+
+}
