@@ -39,6 +39,8 @@
 
     private List<Server>? servers;
 
+    private Timer? Timer;
+
     public override Task SetParametersAsync(ParameterView parameters)
     {
         if (parameters.TryGetValue<string>("CityName", out var cityName))
@@ -70,6 +72,29 @@
 
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            if (string.IsNullOrWhiteSpace(this.SearchFilter))
+            {
+                this.servers = ServersRepository.GetServersByCity(CityName);
+            }
+            else
+            {
+                this.servers = ServersRepository.SearchServers(SearchFilter);
+            }
+
+            StateHasChanged();
+
+            Timer = new Timer(_ =>
+            {
+                base.InvokeAsync(StateHasChanged);
+            }, null, 2000, 2000);
+        }
+    }
 
 }
 
