@@ -39,6 +39,24 @@
 
     private List<Server>? servers;
 
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<string>("CityName", out var cityName))
+        {
+            if (cityName != CityName)
+                base.SetParametersAsync(parameters);
+        }
+
+        if (parameters.TryGetValue<string>("SearchFilter", out var searchFilter))
+        {
+            if (searchFilter != SearchFilter)
+                base.SetParametersAsync(parameters);
+        }
+
+        return Task.CompletedTask;
+    }
+
+
     protected override void OnParametersSet()
     {
         if (string.IsNullOrWhiteSpace(SearchFilter))
