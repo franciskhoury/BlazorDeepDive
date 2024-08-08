@@ -3,8 +3,8 @@
 @inject IJSRuntime JSRuntime
 
 <NavigationLock 
-    OnBeforeInternalNavigation="OnBeforeInternalNavigation"
-    ConfirmExternalNavigation="true"></NavigationLock>
+    OnBeforeInternalNavigation="OnBeforeInternalNavigation">
+</NavigationLock>
 
 <h3>Edit Server</h3>
 <br />
@@ -56,6 +56,8 @@
     [SupplyParameterFromForm(FormName="formServer")] // FormName not required with only one form
     private Server? server { get; set; }
 
+    private bool isSubmitNav = false;
+
     protected override void OnParametersSet() // raised when component receives route parameter
     {
         //base.OnParametersSet(); unnecessary to call base
@@ -67,18 +69,23 @@
     {
         if (server != null)
         {
+            isSubmitNav = true;
             ServersRepository.UpdateServer(server.ServerId, server);
-            NavigationManager.NavigateTo("/servers", true);
+            NavigationManager.NavigateTo($"/servers/back-from/{server.City}", true);
 
         }
     }
 
     private async Task OnBeforeInternalNavigation(LocationChangingContext context)
     {
-        var isConfrimed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to leave this page?");
-        if (!isConfrimed)
+        if (!isSubmitNav)
         {
-            context.PreventNavigation();
+            var isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to leave this page?");
+            if (!isConfirmed)
+            {
+                context.PreventNavigation();
+            }
         }
+
     }
 }

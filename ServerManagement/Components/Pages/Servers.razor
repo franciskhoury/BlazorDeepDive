@@ -1,5 +1,9 @@
 ﻿@page "/servers"
+@page "/servers/back-from/{CityName}"
+
 @rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
 
 <h3>Servers</h3>
 <br />
@@ -35,6 +39,9 @@
 
 
 @code {
+    [Parameter]
+    public string CityName { get; set; }
+
     private string selectedCity = "Toronto";
     private string searchFilter = "";
 
@@ -55,5 +62,19 @@
     {
         this.searchFilter = serverFilter;
         cityListComponent?.ClearSelection();
+    }
+
+    // Do initialization login in OnAfterRender
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (NavigationManager.Uri.Contains("back-from") && !string.IsNullOrWhiteSpace(CityName))
+            {
+                selectedCity = CityName;
+                StateHasChanged();
+            }
+
+        }
     }
 }
