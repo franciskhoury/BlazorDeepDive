@@ -71,7 +71,7 @@
         {
             isSubmitNav = true;
             ServersRepository.UpdateServer(server.ServerId, server);
-            NavigationManager.NavigateTo($"/servers/back-from/{server.City}", true);
+            NavigationManager.NavigateTo($"/servers/back-from/{server?.City}", true);
 
         }
     }

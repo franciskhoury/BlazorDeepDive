@@ -63,10 +63,11 @@
 
     private void DeleteServer(int serverId)
     {
-        if (serverId > 0 && ServersRepository.GetServerById(serverId) != null)
+        Server? server = ServersRepository.GetServerById(serverId);
+        if (serverId > 0 && server != null)
         {
             ServersRepository.DeleteServer(serverId);
-            NavigationManager.NavigateTo("/servers", true); // This does not work if global rendermode is set to InteractiveServer
+            NavigationManager.NavigateTo($"/servers/back-from/{server?.City}", true); // This does not work if global rendermode is set to InteractiveServer
         }
     }
 

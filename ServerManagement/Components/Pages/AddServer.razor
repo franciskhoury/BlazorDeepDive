@@ -49,7 +49,7 @@
         if (server != null)
         {
             ServersRepository.AddServer(server);
-            NavigationManager.NavigateTo("/servers");
+            NavigationManager.NavigateTo($"/servers/back-from/{server?.City}");
         }
     }
 }
