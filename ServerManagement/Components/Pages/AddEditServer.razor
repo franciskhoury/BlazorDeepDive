@@ -75,6 +75,8 @@ else
 
     private bool isSubmitNav = false;
 
+    // Not sure if this should be used on a non-SSR page.
+    // This page is not a child of any interactive components.
     protected override void OnParametersSet()
     {
         if (this.Id.HasValue)
