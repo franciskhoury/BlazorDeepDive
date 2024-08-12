@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Content Remove="Components\Controls\Test.razor" />
-    <Content Remove="Components\Pages\Wizards\SetStatus.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +26,6 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Components\Controls\Test.razor" />
-    <_ContentIncludedByDefault Remove="Components\Pages\Wizards\SetStatus.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +34,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Components\Pages\Wizards\SetStatus.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿@page "/servers"
-@page "/servers/back-from/{CityName}"
+@page "/servers/back_from/{CityName}"
 
 @rendermode InteractiveServer
 
@@ -35,7 +35,7 @@
 </CascadingValue>
 
 <br />
-<a href="/server" class="btn btn-primary">Add Server</a>
+<a href="/servername" class="btn btn-primary">Add Server</a>
 
 
 
@@ -70,7 +70,7 @@
     {
         if (firstRender)
         {
-            if (NavigationManager.Uri.Contains("back-from") && !string.IsNullOrWhiteSpace(CityName))
+            if (NavigationManager.Uri.Contains("back_from") && !string.IsNullOrWhiteSpace(CityName))
             {
                 selectedCity = CityName;
                 StateHasChanged();

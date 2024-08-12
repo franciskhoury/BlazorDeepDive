@@ -25,5 +25,10 @@ namespace ServerManagement.StateStore
         {
             await this.protectedSessionStorage.SetAsync("server", server);
         }
+
+        public async Task DeleteServerAsync()
+        {
+            await this.protectedSessionStorage.DeleteAsync("server");
+        }
     }
 }

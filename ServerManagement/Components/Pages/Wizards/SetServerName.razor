@@ -9,7 +9,8 @@
 @inherits BaseComponent
 
 @inject NavigationManager NavigationManager
-@inject ContainerStorage containerStorage
+@*inject ContainerStorage containerStorage *@
+@inject SessionStorage sessionStorage
 
 <h3>Server Name</h3>
 <br />
@@ -29,7 +30,7 @@
         </Control>
     </FieldComponent>
     <br />
-    <button type="button" class="btn btn-primary" @onclick="GoNext">Next</button>
+    <button type="button" class="btn btn-primary" @onclick="GoNextAsync">Next</button>
 }
 
 
@@ -62,7 +63,23 @@
             }
             else
             {
-                containerStorage.SetServer(server);
+                //containerStorage.SetServer(server);
+                NavigationManager.NavigateTo("/cityname");
+            }
+        }
+    }
+
+    private async Task GoNextAsync()
+    {
+        if (server is not null)
+        {
+            if (string.IsNullOrWhiteSpace(server.Name))
+            {
+                this.errorMessage = "Server Name is required.";
+            }
+            else
+            {
+                await sessionStorage.SetServerAsync(server);
                 NavigationManager.NavigateTo("/cityname");
             }
         }
