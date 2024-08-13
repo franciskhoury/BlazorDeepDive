@@ -8,6 +8,7 @@ builder.Services.AddRazorComponents().
     AddInteractiveServerComponents();
 
 builder.Services.AddTransient<SessionStorage>();
+builder.Services.AddScoped<ContainerStorage>(); // Use scoped, because DI container is per user
 
 var app = builder.Build();
 

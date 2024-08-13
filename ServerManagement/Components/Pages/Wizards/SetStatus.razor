@@ -9,8 +9,8 @@
 @inherits ComponentBase
 
 @inject NavigationManager NavigationManager
-@*inject ContainerStorage containerStorage *@
-@inject SessionStorage sessionStorage
+@inject ContainerStorage containerStorage 
+@*inject SessionStorage sessionStorage *@
 @*inject IServersEFCoreRepository ServersEFCoreRepository *@
 
 <h3>Server Status</h3>
@@ -42,7 +42,7 @@
         </Control>
     </FieldComponent>
     <br />
-    <button type="button" class="btn btn-primary" @onclick="SaveAsync">Save</button>
+    <button type="button" class="btn btn-primary" @onclick="Save">Save</button>
 }
 
 @code {
@@ -50,42 +50,43 @@
 
     private string? errorMessage;
 
-    // protected override void OnAfterRender(bool firstRender)
-    // {
-    //     if (firstRender)
-    //     {
-    //         this.server = this.containerStorage.GetServer();
-    //         StateHasChanged();
-    //     }
-    // }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            this.server = await this.sessionStorage.GetServerAsync();
+            this.server = this.containerStorage.GetServer();
             StateHasChanged();
         }
-
     }
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         this.server = await this.sessionStorage.GetServerAsync();
+    //         StateHasChanged();
+    //     }
+
+    // }
 
     private void Save()
     {
         if (server is not null)
         {
-            //containerStorage.SetServer(null);
+            containerStorage.SetServer(null);
+            ServersRepository.AddServer(server);
             //ServersEFCoreRepository.AddServer(server);
             NavigationManager.NavigateTo($"/servers/back_from/{this.server?.City}");
         }
     }
 
-    private async Task SaveAsync()
-    {
-        if (server is not null)
-        {
-            await sessionStorage.DeleteServerAsync();
-            ServersRepository.AddServer(server);
-            NavigationManager.NavigateTo($"/servers/back_from/{this.server?.City}");
-        }
-    }
+    // private async Task SaveAsync()
+    // {
+    //     if (server is not null)
+    //     {
+    //         await sessionStorage.DeleteServerAsync();
+    //         ServersRepository.AddServer(server);
+    //         NavigationManager.NavigateTo($"/servers/back_from/{this.server?.City}");
+    //     }
+    // }
 }

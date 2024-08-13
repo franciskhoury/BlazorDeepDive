@@ -9,35 +9,44 @@
 <br />
 <br />
 
-<CityListComponent 
-    @ref="cityListComponent"
-    SelectedCity="@selectedCity"
-    SelectCityCallback="HandleCitySelection">
+<CityListComponent @ref="cityListComponent"
+                   SelectedCity="@selectedCity"
+                   SelectCityCallback="HandleCitySelection">
 </CityListComponent>
 
 <br />
 
-<SearchbarComponent
-    @ref="searchbarComponent"
-    SetSearchFilterCallback="HandleSearch"
-    style="width:75%"
-    data-searchfilter="yo!">
+<SearchbarComponent @ref="searchbarComponent"
+                    SetSearchFilterCallback="HandleSearch"
+                    style="width:75%"
+                    data-searchfilter="yo!">
 </SearchbarComponent>
 
 <br />
 
 <CascadingValue Name="SelectedCity" Value="@selectedCity">
-    <ServerListComponent 
-        @rendermode="InteractiveServer"
-        CityName="@selectedCity"
-        SearchFilter="@searchFilter">
+    <ServerListComponent @rendermode="InteractiveServer"
+                         CityName="@selectedCity"
+                         SearchFilter="@searchFilter">
     </ServerListComponent>
 </CascadingValue>
 
 <br />
-<a href="/servername" class="btn btn-primary">Add Server</a>
+<a href="/server" class="btn btn-primary" id="a_add_server">Add Server</a>
+<br/>
+<p>Please choose the Add Server implementation:</p>
+<input type="radio" id="single_form" name="add_nav" value="/server" onclick="handleClick(this);" checked>
+<label for="single_form">Single Form</label>
+<br>
+<input type="radio" id="wizard" name="add_nav" value="/servername" onclick="handleClick(this);">
+<label for="wizard">Wizard</label>
 
-
+<script type="text/javascript">
+    function handleClick(rad) {
+        var anchor = document.getElementById("a_add_server");
+        anchor.setAttribute("href", rad.value);
+    }
+</script>
 
 @code {
     [Parameter]

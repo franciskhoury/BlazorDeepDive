@@ -9,8 +9,8 @@
 @inherits ComponentBase
 
 @inject NavigationManager NavigationManager
-@* inject ContainerStorage containerStorage *@
-@inject SessionStorage sessionStorage
+@inject ContainerStorage containerStorage 
+@* inject SessionStorage sessionStorage *@
 
 <h3>City Name</h3>
 <br />
@@ -29,7 +29,7 @@
         </Control>
     </FieldComponent>
     <br />
-    <button type="button" class="btn btn-primary" @onclick="GoNextAsync">Next</button>
+    <button type="button" class="btn btn-primary" @onclick="GoNext">Next</button>
 }
 
 @code {
@@ -42,23 +42,23 @@
         base.OnInitialized();
     }
 
-    // protected override void OnAfterRender(bool firstRender)
-    // {
-    //     if (firstRender)
-    //     {
-    //         this.server = this.containerStorage.GetServer();
-    //         StateHasChanged();
-    //     }
-    // }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            this.server = await this.sessionStorage.GetServerAsync();
+            this.server = this.containerStorage.GetServer();
             StateHasChanged();
         }
     }
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         this.server = await this.sessionStorage.GetServerAsync();
+    //         StateHasChanged();
+    //     }
+    // }
 
     private void GoNext()
     {
@@ -70,25 +70,25 @@
             }
             else
             {
-                //containerStorage.SetServer(server);
+                containerStorage.SetServer(server);
                 NavigationManager.NavigateTo("/serverstatus");
             }
         }
     }
 
-    private async Task GoNextAsync()
-    {
-        if (server is not null)
-        {
-            if (string.IsNullOrWhiteSpace(server.City))
-            {
-                this.errorMessage = "City Name is required.";
-            }
-            else
-            {
-                await sessionStorage.SetServerAsync(server);
-                NavigationManager.NavigateTo("/serverstatus");
-            }
-        }
-    }
+    // private async Task GoNextAsync()
+    // {
+    //     if (server is not null)
+    //     {
+    //         if (string.IsNullOrWhiteSpace(server.City))
+    //         {
+    //             this.errorMessage = "City Name is required.";
+    //         }
+    //         else
+    //         {
+    //             await sessionStorage.SetServerAsync(server);
+    //             NavigationManager.NavigateTo("/serverstatus");
+    //         }
+    //     }
+    // }
 }
