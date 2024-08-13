@@ -1,13 +1,51 @@
-﻿<div class="col">
+﻿@using ServerManagement.StateStore
+
+@implements IDisposable
+
+@inject TorontoOnlineServersStore TorontoOnlineServersStore
+
+<div class="col">
     <div class="card @(City == SelectedCity? "border-primary":"")">
         <img src="@($"/images/{City}.png")" class="card-img-top" alt="@City">
         <div class="card-body">
             <button class="btn btn-primary" type="button" @onclick="@(() => {SelectCity(City);})">@City</button>
         </div>
+        <div>
+
+            @switch (City)
+            {
+                case "Toronto":
+                    <text>@numberServersOnlineToronto</text>
+                    break;
+                case "Montreal":
+                    //<text>@numberServersOnlineMontreal</text>
+                    <text>&nbsp;</text>
+                    break;
+                case "Ottawa":
+                    //<text>@numberServersOnlineOttawa</text>
+                    <text>&nbsp;</text>
+                    break;
+                case "Calgary":
+                    //<text>@numberServersOnlineCalgary</text>
+                    <text>&nbsp;</text>
+                    break;
+                case "Halifax":
+                    //<text>@numberServersOnlineHalifax</text>
+                    <text>&nbsp;</text>
+                    break;
+            }
+        </div>
     </div>
 </div>
 
 @code {
+
+    private int numberServersOnlineToronto;
+    // private int numberServersOnlineMontreal;
+    // private int numberServersOnlineCalgary;
+    // private int numberServersOnlineOttawa;
+    // private int numberServersOnlineHalifax;
+
     [Parameter]
     public string SelectedCity { get; set; } = "Toronto";
 
@@ -17,8 +55,69 @@
     [Parameter]
     public EventCallback<string> SelectCityCallback { get; set; }
 
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            switch (City)
+            {
+                case "Toronto":
+                    numberServersOnlineToronto = TorontoOnlineServersStore.GetNumberServersOnline();
+                    TorontoOnlineServersStore.AddStateChangeListeners(OnTorontoServersStatusChange);
+                    break;
+                case "Montreal":
+                    // numberServersOnlineMontreal = MontrealOnlineServersStore.GetNumberServersOnline();
+                    // MontrealOnlineServersStore.AddStateChangeListeners(OnMontrealServersStatusChange);
+                    break;
+                case "Ottawa":
+                    // numberServersOnlineOttawa = OttawaOnlineServersStore.GetNumberServersOnline();
+                    // OttawaOnlineServersStore.AddStateChangeListeners(OnOttawaServersStatusChange);
+                    break;
+                case "Calgary":
+                    // numberServersOnlineCalgary = CalgaryOnlineServersStore.GetNumberServersOnline();
+                    // CalgaryOnlineServersStore.AddStateChangeListeners(OnCalgaryServersStatusChange);
+                    break;
+                case "Halifax":
+                    // numberServersOnlineHalifax = HalifaxOnlineServersStore.GetNumberServersOnline();
+                    // HalifaxOnlineServersStore.AddStateChangeListeners(OnHalifaxServersStatusChange);
+                    break;
+            }
+
+            StateHasChanged();
+        }
+    }
+
     private void SelectCity(string cityName)
     {
         SelectCityCallback.InvokeAsync(cityName);
+    }
+
+    private void OnTorontoServersStatusChange()
+    {
+        numberServersOnlineToronto = TorontoOnlineServersStore.GetNumberServersOnline();
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        switch (City)
+        {
+            case "Toronto":
+                TorontoOnlineServersStore.RemoveStateChangeListeners(OnTorontoServersStatusChange);
+                break;
+            case "Montreal":
+                // MontrealOnlineServersStore.RemoveStateChangeListeners(OnMontrealServersStatusChange);
+                break;
+            case "Ottawa":
+                // OttawaOnlineServersStore.RemoveStateChangeListeners(OnOttawaServersStatusChange);
+                break;
+            case "Calgary":
+                // CalgaryOnlineServersStore.RemoveStateChangeListeners(OnCalgaryServersStatusChange);
+                break;
+            case "Halifax":
+                // HalifaxOnlineServersStore.RemoveStateChangeListeners(OnHalifaxServersStatusChange);
+                break;
+        }
     }
 }
