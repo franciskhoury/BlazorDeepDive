@@ -5,7 +5,7 @@
 @rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager
-@inject TorontoOnlineServersStore TorontoOnlineServersStore
+@inject OnlineServersStore OnlineServersStore
 
 <h3>Servers</h3>
 <br />
@@ -56,6 +56,7 @@
 
     private string selectedCity = "Toronto";
     private string searchFilter = "";
+    private List<string> cities;
 
     private CityListComponent? cityListComponent;
     private ServerSearchComponent? serverSearchComponent;
@@ -87,10 +88,17 @@
                 StateHasChanged();
             }
 
-            //Init state stores
-            var serversToronto = ServersRepository.GetServersByCity("Toronto");
-            if (serversToronto is not null)
-                TorontoOnlineServersStore.SetNumbersServersOnline(serversToronto.Count(x => x.IsOnline));
+            cities = ServersRepository.GetServers().Select(s => s.City).Distinct().ToList();
+            if (cities is not null)
+            {
+                foreach (string city in cities)
+                {
+                    var servers = ServersRepository.GetServersByCity(city);
+                    if (servers is not null)
+                        OnlineServersStore.SetNumbersServersOnline(city, servers.Count(x => x.IsOnline));
+                }
+            }
+
 
         }
     }
