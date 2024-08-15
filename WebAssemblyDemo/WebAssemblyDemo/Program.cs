@@ -1,10 +1,11 @@
-using WebAssemblyDemo.Client.Pages;
+using WebAssemblyDemo.Client.Controls;
 using WebAssemblyDemo.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
 var app = builder.Build();
@@ -28,6 +29,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
+    .AddInteractiveServerRenderMode()
     .AddAdditionalAssemblies(typeof(WebAssemblyDemo.Client._Imports).Assembly);
 
 app.Run();

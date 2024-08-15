@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerManagement", "ServerM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListProject", "BlazorCourseProject1_ToDoList\ToDoListProject.csproj", "{07801939-011D-42A0-A2F2-C7A109889806}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAssemblyDemo", "WebAssemblyDemo\WebAssemblyDemo\WebAssemblyDemo.csproj", "{57B99BE9-F63B-4A90-A358-93976D6F8C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAssemblyDemo", "WebAssemblyDemo\WebAssemblyDemo\WebAssemblyDemo.csproj", "{57B99BE9-F63B-4A90-A358-93976D6F8C4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAssemblyDemo.Client", "WebAssemblyDemo\WebAssemblyDemo.Client\WebAssemblyDemo.Client.csproj", "{E3A4871D-5E9B-40BA-ABE8-D01819F5B547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAssemblyDemo.Client", "WebAssemblyDemo\WebAssemblyDemo.Client\WebAssemblyDemo.Client.csproj", "{E3A4871D-5E9B-40BA-ABE8-D01819F5B547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
