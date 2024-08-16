@@ -2,6 +2,7 @@
 @rendermode InteractiveWebAssembly
 
 @inject IJSRuntime JS
+@inject ContainerStorage ContainerStorage
 
 <h3>Browser Storage Step 2</h3>
 <br />
@@ -13,11 +14,15 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        var guid = Guid.NewGuid();
+        Console.WriteLine($"{this.GetType().Name}: {nameof(OnAfterRenderAsync)} : {guid}");
+
         await base.OnAfterRenderAsync(firstRender);
 
         if (firstRender)
         {
-            data = await JS.InvokeAsync<string>("sessionStorage.getItem", "demo-data");
+            //data = await JS.InvokeAsync<string>("sessionStorage.getItem", "demo-data");
+            data = ContainerStorage.GetMessage();
             StateHasChanged();
         }
         
