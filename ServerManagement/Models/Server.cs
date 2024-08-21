@@ -12,7 +12,10 @@ namespace ServerManagement.Models
             int randomNumber = random.Next(0,2);
             IsOnline = randomNumber == 0;
         }
+
+        [Key]
         public int ServerId { get; set; }
+
         public bool IsOnline { get; set; }
 
         [Required]

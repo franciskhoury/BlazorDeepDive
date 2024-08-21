@@ -1,9 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using ServerManagement.Components;
+using ServerManagement.Data;
 using ServerManagement.StateStore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// For ServerInteractivity, use AddDbContextFactory instead of AddDbContext, which is not thread-safe with Signal-R
+builder.Services.AddDbContextFactory<ServerManagementContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ServerManagement"));
+});
+
 builder.Services.AddRazorComponents().
     AddInteractiveServerComponents();
 
