@@ -6,6 +6,7 @@
 
 @inject NavigationManager NavigationManager
 @inject OnlineServersStore OnlineServersStore
+@inject IServersEFCoreRepository ServersEFCoreRepository
 
 <h3>Servers</h3>
 <br />
@@ -88,13 +89,13 @@
                 StateHasChanged();
             }
 
-            cities = await Task.Run(() => ServersRepository.GetServers().Select(s => s.City).Distinct().ToList() );
+            cities = await Task.Run(() => ServersEFCoreRepository.GetServers().Select(s => s.City).Distinct().ToList() );
 
             if (cities is not null)
             {
                 foreach (string city in cities)
                 {
-                    var servers = ServersRepository.GetServersByCity(city);
+                    var servers = ServersEFCoreRepository.GetServersByCity(city);
                     if (servers is not null)
                         OnlineServersStore.SetNumbersServersOnline(city, servers.Count(x => x.IsOnline));
                 }

@@ -1,6 +1,7 @@
 ﻿@using ServerManagement.StateStore
 @inject NavigationManager NavigationManager
 @inject OnlineServersStore OnlineServersStore
+@inject IServersEFCoreRepository ServersEFCoreRepository
 
 @if (Server != null)
 {
@@ -65,10 +66,10 @@
 
     private void DeleteServer(int serverId)
     {
-        Server? server = ServersRepository.GetServerById(serverId);
+        Server? server = ServersEFCoreRepository.GetServerById(serverId);
         if (serverId > 0 && server != null)
         {
-            ServersRepository.DeleteServer(serverId);
+            ServersEFCoreRepository.DeleteServer(serverId);
             NavigationManager.NavigateTo($"/servers/back_from/{server?.City}", true); // This does not work if global rendermode is set to InteractiveServer
         }
     }
@@ -105,8 +106,7 @@
 
                 this.Server.IsOnline = status;
 
-                //ServersEFCoreRepository.UpdateServer(this.Server.ServerId, Server);
-                ServersRepository.UpdateServer(this.Server.ServerId, Server);
+                ServersEFCoreRepository.UpdateServer(this.Server.ServerId, Server);
             }
         }
 

@@ -1,4 +1,6 @@
-﻿@implements IDisposable
+﻿@inject IServersEFCoreRepository ServersEFCoreRepository
+
+@implements IDisposable
 
 @if (this.servers != null && this.servers.Count > 0)
 {
@@ -71,11 +73,11 @@
 
         if (string.IsNullOrWhiteSpace(SearchFilter))
         {
-            this.servers = ServersRepository.GetServersByCity(CityName);
+            this.servers = ServersEFCoreRepository.GetServersByCity(CityName);
         }
         else
         {
-            this.servers = ServersRepository.SearchServers(SearchFilter);
+            this.servers = ServersEFCoreRepository.SearchServers(SearchFilter);
         }
 
     }
@@ -91,11 +93,11 @@
         {
             if (string.IsNullOrWhiteSpace(this.SearchFilter))
             {
-                this.servers = ServersRepository.GetServersByCity(CityName);
+                this.servers = ServersEFCoreRepository.GetServersByCity(CityName);
             }
             else
             {
-                this.servers = ServersRepository.SearchServers(SearchFilter);
+                this.servers = ServersEFCoreRepository.SearchServers(SearchFilter);
             }
 
             StateHasChanged();

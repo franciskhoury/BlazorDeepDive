@@ -2,6 +2,7 @@
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@inject IServersEFCoreRepository ServersEFCoreRepository
 
 <NavigationLock 
     OnBeforeInternalNavigation="OnBeforeInternalNavigation">
@@ -80,7 +81,7 @@ else
     protected override void OnParametersSet()
     {
         if (this.Id.HasValue)
-            server ??= ServersRepository.GetServerById(this.Id.Value);
+            server ??= ServersEFCoreRepository.GetServerById(this.Id.Value);
         else
             server ??= new Server() { IsOnline = false };
     }
@@ -90,9 +91,9 @@ else
         if (server != null)
         {
             if (this.Id.HasValue)
-                ServersRepository.UpdateServer(server.ServerId, server);
+                ServersEFCoreRepository.UpdateServer(server.ServerId, server);
             else
-                ServersRepository.AddServer(server);
+                ServersEFCoreRepository.AddServer(server);
 
             isSubmitNav = true;
             NavigationManager.NavigateTo($"/servers/back_from/{server?.City}", true);
