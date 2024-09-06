@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServerManagement.Components;
 using ServerManagement.Data;
@@ -7,6 +8,13 @@ using ServerManagement.StateStore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
+    .AddIdentityCookies();
 
 // For ServerInteractivity, use AddDbContextFactory instead of AddDbContext, which is not thread-safe with SignalR
 builder.Services.AddDbContextFactory<ServerManagementContext>(options =>

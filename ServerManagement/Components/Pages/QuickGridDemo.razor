@@ -4,6 +4,7 @@
 @rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager
+@inject IServersEFCoreRepository ServersEFCoreRepository
 
 <h3>QuickGridDemo</h3>
 <br />
@@ -74,7 +75,15 @@
 
 
 @code {
-    private List<Server> servers = ServersRepository.GetServers();
+    private List<Server>? servers;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            servers = ServersEFCoreRepository.GetServers();
+        }
+    }
 
     private PaginationState paginationState = new PaginationState { ItemsPerPage = 6 };
 
