@@ -1,5 +1,6 @@
 using WebAssemblyDemo.Client;
 using WebAssemblyDemo.Client.Controls;
+using WebAssemblyDemo.Client.Models;
 using WebAssemblyDemo.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,14 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddSingleton<ContainerStorage>();
+
+builder.Services.AddHttpClient("ServersApi", client =>
+{
+    client.BaseAddress = new Uri("https://webassembly-demo-62edd-default-rtdb.firebaseio.com");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddTransient<IServersRepository, ServersApiRepository>();
 
 var app = builder.Build();
 
@@ -34,5 +43,7 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddInteractiveServerRenderMode()
     .AddAdditionalAssemblies(typeof(WebAssemblyDemo.Client._Imports).Assembly);
+
+
 
 app.Run();
