@@ -1,0 +1,24 @@
+﻿@page "/auth"
+
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
+<PageTitle>Auth</PageTitle>
+
+<h1>You are authenticated</h1>
+
+<AuthorizeView>
+    Hello @context.User.Identity?.Name!
+
+    @if (context is not null)
+    {
+    <h2>User Claims</h2>
+    <ul>
+        @foreach (var claim in context.User.Claims)
+        {
+            <li>@claim.Type : @claim.Value</li>
+        }
+    </ul>
+    }
+</AuthorizeView>
