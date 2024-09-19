@@ -2,37 +2,47 @@
 
 @implements IDisposable
 
-@if (this.servers != null && this.servers.Count > 0)
+@if (servers is null)
 {
-    <table class="table table-striped">
-        <RepeaterComponent Items="this.servers">
-            <Header>
-                <thead>
-                    <tr>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            City
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Users Online
-                        </th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-            </Header>
-            <Row Context="server">
-                <ServerComponent Server="server"></ServerComponent>
-            </Row>
-        </RepeaterComponent>
-    </table>
+    <p><em>Loading...</em></p>
 }
-
+else
+{
+    @if (this.servers.Count > 0)
+    {
+        <table class="table table-striped">
+            <RepeaterComponent Items="this.servers">
+                <Header>
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                City
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Users Online
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </Header>
+                <Row Context="server">
+                    <ServerComponent Server="server"></ServerComponent>
+                </Row>
+            </RepeaterComponent>
+        </table>
+    }
+    else
+    {
+        <p><em>No Servers Found</em></p>
+    }
+}
 
 @code {
     [Parameter]
@@ -47,8 +57,8 @@
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(SetParametersAsync)} : {guid}");
+        //var guid = Guid.NewGuid();
+        //Console.WriteLine($"{this.GetType().Name}: {nameof(SetParametersAsync)} : {guid}");
 
         if (parameters.TryGetValue<string>("CityName", out var cityName))
         {
@@ -68,8 +78,8 @@
 
     protected override void OnParametersSet()
     {
-        var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(OnParametersSet)} : {guid}");
+        //var guid = Guid.NewGuid();
+        //Console.WriteLine($"{this.GetType().Name}: {nameof(OnParametersSet)} : {guid}");
 
         if (string.IsNullOrWhiteSpace(SearchFilter))
         {
@@ -82,10 +92,13 @@
 
     }
 
+    // With pre-rendering on (default) this event is first raised after the Signal-R channel is established,
+    // so, there is may be some lag time from the user's perspective.
+    
     protected override void OnAfterRender(bool firstRender)
     {
         var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(OnAfterRender)} : {guid}");
+        //Console.WriteLine($"{this.GetType().Name}: {nameof(OnAfterRender)} : {guid}");
 
         base.OnAfterRender(firstRender);
 
@@ -104,37 +117,59 @@
 
             Timer = new Timer(_ =>
             {
+                this.servers = ServersEFCoreRepository.GetServersByCity(CityName); // This "works" but may throw off the On/Off button functionality
                 base.InvokeAsync(StateHasChanged);
-            }, null, 2000, 2000);
+            }, null, 5000, 5000);
         }
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(OnAfterRenderAsync)} : {guid}");
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     var guid = Guid.NewGuid();
+    //     // Console.WriteLine($"{this.GetType().Name}: {nameof(OnAfterRenderAsync)} : {guid}");
 
-        await base.OnAfterRenderAsync(firstRender);
-    }
+    //     base.OnAfterRender(firstRender);
+
+    //     if (firstRender)
+    //     {
+    //         await Task.Delay(2000);
+
+    //         if (string.IsNullOrWhiteSpace(this.SearchFilter))
+    //         {
+    //             this.servers = ServersEFCoreRepository.GetServersByCity(CityName);
+    //         }
+    //         else
+    //         {
+    //             this.servers = ServersEFCoreRepository.SearchServers(SearchFilter);
+    //         }
+
+    //         StateHasChanged();
+
+    //         Timer = new Timer(_ =>
+    //         {
+    //             base.InvokeAsync(StateHasChanged);
+    //         }, null, 2000, 2000);
+    //     }
+    // }
 
     protected override bool ShouldRender()
     {
-        var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(ShouldRender)} : {guid}");
+        //var guid = Guid.NewGuid();
+        //Console.WriteLine($"{this.GetType().Name}: {nameof(ShouldRender)} : {guid}");
 
         return base.ShouldRender();
     }
 
     protected override void OnInitialized()
     {
-        var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(OnInitialized)} : {guid}");
+        //var guid = Guid.NewGuid();
+        //Console.WriteLine($"{this.GetType().Name}: {nameof(OnInitialized)} : {guid}");
     }
 
     public void Dispose()
     {
-        var guid = Guid.NewGuid();
-        Console.WriteLine($"{this.GetType().Name}: {nameof(Dispose)} : {guid}");
+        //var guid = Guid.NewGuid();
+        //Console.WriteLine($"{this.GetType().Name}: {nameof(Dispose)} : {guid}");
     }
 
 }

@@ -9,7 +9,7 @@ namespace ServerManagement.Models
         public Server()
         {
             Random random = new Random();
-            int randomNumber = random.Next(0,2);
+            int randomNumber = random.Next(0, 2);
             IsOnline = randomNumber == 0;
         }
 

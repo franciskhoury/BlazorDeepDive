@@ -56,6 +56,7 @@ namespace ServerManagement.Models
                 serverToUpdate.IsOnline = server.IsOnline;
                 serverToUpdate.Name = server.Name;
                 serverToUpdate.City = server.City;
+                serverToUpdate.UserCount = server.UserCount;
 
                 db.SaveChanges();
             }

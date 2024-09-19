@@ -4,12 +4,12 @@ SELECT *
   FROM dbo.AspNetUsers;
 
 
-insert into dbo.AspNetUserClaims
-(UserId,ClaimType,ClaimValue)
-values
-('253577d2-8ebd-49fd-9eea-879b97634ea2','Department','Software Development'),
-('253577d2-8ebd-49fd-9eea-879b97634ea2','Role','Code Bitch')
-;
+--insert into dbo.AspNetUserClaims
+--(UserId,ClaimType,ClaimValue)
+--values
+--('85ae204b-dcad-4b4c-ae38-31252b34c16a','Department','Software Development'),
+--('85ae204b-dcad-4b4c-ae38-31252b34c16a','Role','General Manager')
+--;
 
 SELECT Id,UserId,ClaimType,ClaimValue
   FROM dbo.AspNetUserClaims;

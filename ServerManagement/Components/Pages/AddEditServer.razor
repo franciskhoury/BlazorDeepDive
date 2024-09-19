@@ -1,8 +1,11 @@
 ﻿@page "/server/{id:int?}"
+@using Microsoft.AspNetCore.Authorization
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject IServersEFCoreRepository ServersEFCoreRepository
+
+@attribute [Authorize(Policy = "Manager")]
 
 <NavigationLock 
     OnBeforeInternalNavigation="OnBeforeInternalNavigation">

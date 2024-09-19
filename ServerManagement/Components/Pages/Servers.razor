@@ -1,5 +1,6 @@
 ﻿@page "/servers"
 @page "/servers/back_from/{CityName}"
+@using Microsoft.AspNetCore.Components.Authorization
 @using ServerManagement.StateStore
 
 @rendermode InteractiveServer
@@ -9,8 +10,10 @@
 @inject IServersEFCoreRepository ServersEFCoreRepository
 
 <h3>Servers</h3>
-<br />
-<br />
+<AuthorizeView>
+    Logged in as: @context.User.Identity?.Name
+</AuthorizeView>
+<br/>
 
 <CityListComponent @ref="cityListComponent"
                    SelectedCity="@selectedCity"
@@ -78,7 +81,7 @@
         cityListComponent?.ClearSelection();
     }
 
-    // Do initialization login in OnAfterRenderAsync
+    // Do initialization logic in OnAfterRenderAsync
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
