@@ -86,6 +86,7 @@
         }
     }
 
+    // Persist Servers data retrieved from Api calls in pre-rendering
     private Task PersistData()
     {
         ApplicationState.PersistAsJson("Servers", listServers);
