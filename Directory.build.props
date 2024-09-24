@@ -1,0 +1,8 @@
+<Project>
+    <PropertyGroup>
+      <DocumentationFile>bin\$(MSBuildProjectName).xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    </PropertyGroup>
+</Project>

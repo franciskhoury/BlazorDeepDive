@@ -1,19 +1,21 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using ServerManagement.Components;
 using ServerManagement.Components.Account;
 using ServerManagement.Data;
-using ServerManagement.Components;
 using ServerManagement.Models;
 using ServerManagement.StateStore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContextFactory<ServerManagementContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ServerManagement"));
-});
+
+// For thread safety with ServerInteractivity: 
+// Use AddDbContextFactory<>, which uses ServiceLifetime.Singleton.
+// Do NOT use AddDbContext<>, which uses ServiceLifetime.Scoped (i.e., used through lifetime of SignalR channel)
+builder.Services.AddDbContextFactory<ServerManagementContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ServerManagement")));
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -30,10 +32,7 @@ builder.Services.AddAuthentication(options =>
 })
     .AddIdentityCookies();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Manager", policy => policy.RequireClaim("Role", "General Manager"));
-});
+builder.Services.AddAuthorization(options => options.AddPolicy("Manager", policy => policy.RequireClaim("Role", "General Manager")));
 
 var connectionString = builder.Configuration.GetConnectionString("IdentityDatabase") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -58,13 +57,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
+    _ = app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    _ = app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    _ = app.UseHsts();
 }
 
 app.UseHttpsRedirection();

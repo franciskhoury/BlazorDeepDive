@@ -5,6 +5,3 @@ obj/
 
 # Ignore .user files
 *.user
-
-Directory.build.props
-.editorconfig
